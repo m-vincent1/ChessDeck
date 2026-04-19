@@ -1,0 +1,4 @@
+-Quand je passe la souris sur le boutons zoom il y a le plateau qui bouge du coup ya une barre horizontal qui apparait en bas du plateau adapte pour plus qu'il y ai ca 
+-quand je suis en mode zoom je veux que la fenetre soit foncé et que on voit ma mains et la main de l'adversaire juste le nombre de carte qu'il a mais on aura encore les carte de dos et je veux que en mode zoom on puisse appliquer les cartes si on ouvre la main a droite la actuellement je ne peut rien faire il faut qu'on puisse cliquer sur une carte pour l'appliquer comme en mode dezoom 
+-En mode zoom je veux qu'on garde les timers du mode zoom mais rapproché du plateau 
+-en mode zoom je veux que dans la main a droite quand on clique on voit aussi la carte secrete en rouge 

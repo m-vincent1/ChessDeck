@@ -1,11 +1,11 @@
+# Claude Code — fichiers internes
+.claude/
+CLAUDE.md
+
+# Stockfish exe (trop lourd pour GitHub, non utilisé dans le jeu web)
+stockfish/stockfish-windows-x86-64-avx2.exe
+
 # OS
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# Stockfish binaries
-stockfish/*.exe
-stockfish/*.dll
-stockfish/src/
-stockfish/scripts/
-stockfish/wiki/

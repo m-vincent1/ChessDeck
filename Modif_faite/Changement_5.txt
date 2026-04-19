@@ -1,0 +1,2 @@
+-Quand on clique sur une piece pour changer de postion avec une autre grace a la carte position si je selectionne un cavalier puis j'active la carte et que je change la postion du cavalier avce une autre piece la piece qui sera sur la position du cavalier comme j'avais cliquer sur le cavalier avant aura le deplacement visible du cavalier et elle peut ce deplacer comme le cavalier du coup il faut changer ca 
+- Quand j'ai plus de 5 cartes dans mon deck meme si pas de doublons on ne peut plus stocker de carte et les cartes tiré ont joué immédiatements 

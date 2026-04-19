@@ -1,0 +1,6 @@
+-Il faut que les pions sur le plateau quand le plateau s'agrandit que ce soit en zoomant ou avec une carte il ne doivent pas dezoomé il doivent etre proportionelle et garder la taille qu'il prenne dans la case initialement pour tout le jeux 
+-le plateau quand on appuie sur le boutons zoom est un tout petit peut trop gros je ne veux pas qu'il y ai la barre pour monter descendre a sa droite donc change ca et le bouton maintenir ne marche pas sur pc donc fait un bouton "Voir Cartes" plutôt ou on clique et on clique sur une petite fleche pour femrer la fenetre qi s'ouvrir par la droite pour voir notre main et le deck pour nombre de tour
+-le petit drapeau blanc pour abandonner doit etre plus foncé 
+-Quand j'applique la carte echange de position sur une carte qui a un effet autour d'elle comme la carte transformation l'animation ne suit pas la piece sur qui l'effet est et l'effet ne s'applique plus change ca 
+-La carte resurections il ne doit pas avoir la reine dans les choix disponible si elle est au cimetiere 
+-Quand on clique sur voir plateau apres que la partie soit finis la fentre est flous a part le boutons pour revenir au menus je veux qu'il n'y est rien de flous 
