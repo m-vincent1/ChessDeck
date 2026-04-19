@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÉchecDeck - Échecs & Cartes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ==================== MENU PRINCIPAL ==================== -->
+<div id="menu-screen">
+
+    <!-- Vue principale : Jouer + Voir les cartes -->
+    <div id="menu-main" class="menu-container">
+        <div class="menu-logo">♚</div>
+        <h1 class="menu-title">ÉchecDeck</h1>
+        <p class="menu-subtitle">Échecs × Cartes</p>
+        <div class="menu-buttons-col">
+            <button class="menu-btn" onclick="showGameModeSelect()">
+                <span class="btn-icon">♚</span>
+                <span class="btn-text">Jouer</span>
+            </button>
+            <button class="menu-btn menu-btn-secondary" onclick="showCardGallery()">
+                <span class="btn-icon">🃏</span>
+                <span class="btn-text">Voir les cartes</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Vue choix adversaire -->
+    <div id="menu-opponent" class="menu-container" style="display:none;">
+        <div class="menu-logo" style="font-size:60px;margin-bottom:8px;">⚔️</div>
+        <h2 class="menu-mode-title">Mode de jeu</h2>
+        <div class="menu-buttons-col">
+            <button class="menu-btn" onclick="selectOpponent('player')">
+                <span class="btn-icon">👥</span>
+                <span class="btn-text">Joueur vs Joueur</span>
+            </button>
+            <button class="menu-btn" onclick="selectOpponent('ai')">
+                <span class="btn-icon">🤖</span>
+                <span class="btn-text">Joueur vs IA</span>
+            </button>
+            <button class="menu-btn menu-btn-secondary" onclick="showMainMenu()">
+                <span class="btn-text">← Retour</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Vue choix difficulté IA -->
+    <div id="menu-difficulty" class="menu-container" style="display:none;">
+        <div class="menu-logo" style="font-size:60px;margin-bottom:8px;">🤖</div>
+        <h2 class="menu-mode-title">Difficulté IA</h2>
+        <div class="menu-buttons-col">
+            <button class="menu-btn" onclick="selectDifficulty('easy')">
+                <span class="btn-icon">🌱</span>
+                <span class="btn-text">Facile</span>
+            </button>
+            <button class="menu-btn" onclick="selectDifficulty('normal')">
+                <span class="btn-icon">⚔️</span>
+                <span class="btn-text">Normal</span>
+            </button>
+            <button class="menu-btn menu-btn-secondary" onclick="showOpponentSelect()">
+                <span class="btn-text">← Retour</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Vue choix de durée -->
+    <div id="menu-mode" class="menu-container" style="display:none;">
+        <div class="menu-logo" style="font-size:60px;margin-bottom:8px;">⏱</div>
+        <h2 class="menu-mode-title">Durée de partie</h2>
+        <div class="menu-buttons-col">
+            <button class="menu-btn" onclick="startGame(5)">
+                <span class="btn-icon">⚡</span>
+                <span class="btn-text">5 minutes</span>
+            </button>
+            <button class="menu-btn" onclick="startGame(10)">
+                <span class="btn-icon">⏳</span>
+                <span class="btn-text">10 minutes</span>
+            </button>
+            <button class="menu-btn menu-btn-secondary" onclick="showOpponentSelect()">
+                <span class="btn-text">← Retour</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ==================== SECRET CARD SELECTION ==================== -->
+<div id="secret-selection-screen" style="display:none;">
+    <div class="ss-overlay">
+        <h2 class="ss-title" id="ss-title">Joueur Blanc — Choisissez votre carte secrète</h2>
+        <div class="ss-subtitle">L'autre joueur, détournez le regard !</div>
+        <div class="ss-countdown" id="ss-countdown">10</div>
+        <div class="ss-cards" id="ss-cards"></div>
+    </div>
+</div>
+
+<!-- ==================== ÉCRAN DE JEU ==================== -->
+<div id="game-screen" style="display:none;">
+
+    <button class="back-btn" onclick="backToMenu()">← Menu</button>
+    <div class="turn-indicator" id="turn-indicator">Tour : Blanc</div>
+
+    <!-- JOUEUR NOIR (HAUT GAUCHE) -->
+    <div class="player-card player-top-right" id="player-black-card">
+        <div class="pc-avatar">♚</div>
+        <div class="pc-info">
+            <span class="pc-name" id="player-black-name">Joueur Noir</span>
+            <span class="pc-timer" id="timer-black">10:00</span>
+        </div>
+        <button class="forfeit-btn" id="forfeit-btn-black" onclick="showForfeitConfirm('black')" title="Abandonner">🏳️</button>
+    </div>
+
+    <!-- JOUEUR BLANC (BAS GAUCHE) -->
+    <div class="player-card player-bottom-left" id="player-white-card">
+        <div class="pc-avatar">♚</div>
+        <div class="pc-info">
+            <span class="pc-name">Joueur Blanc</span>
+            <span class="pc-timer" id="timer-white">10:00</span>
+        </div>
+        <button class="forfeit-btn" onclick="showForfeitConfirm('white')" title="Abandonner">🏳️</button>
+    </div>
+
+    <!-- ZONE PRINCIPALE -->
+    <div class="game-main">
+
+        <!-- CIMETIÈRES -->
+        <div class="graveyards">
+            <div class="graveyard">
+                <div class="graveyard-title">⚰ Cimetière Noir</div>
+                <div class="graveyard-pieces" id="graveyard-black-pieces"></div>
+            </div>
+            <div class="graveyard-separator"></div>
+            <div class="graveyard">
+                <div class="graveyard-title">⚰ Cimetière Blanc</div>
+                <div class="graveyard-pieces" id="graveyard-white-pieces"></div>
+            </div>
+        </div>
+
+        <!-- ÉCHIQUIER -->
+        <div class="board-container">
+            <div class="board-top-row">
+                <div class="board-labels-top" id="board-labels-top"></div>
+                <button class="board-zoom-btn" id="board-zoom-btn" onclick="toggleBoardZoom()" title="Mode plein écran plateau">⛶</button>
+            </div>
+            <div class="board-with-rows">
+                <div class="row-labels" id="row-labels-left"></div>
+                <div id="chessboard" class="chessboard"></div>
+                <div class="row-labels" id="row-labels-right"></div>
+            </div>
+            <div class="board-labels-bottom" id="board-labels-bottom"></div>
+        </div>
+
+        <!-- PANNEAU DROIT -->
+        <div class="right-panel">
+
+            <!-- Section Noir (haut) -->
+            <div class="player-hand-section black-hand-section">
+                <div class="hand-area" id="hand-black"></div>
+                <div class="secret-slot">
+                    <div class="secret-label">Carte secrète Noir</div>
+                    <div class="secret-card" id="secret-card-black" onclick="activateSecretCard('black')">
+                        <div class="sc-back" id="sc-back-black">
+                            <div class="sc-pattern"></div>
+                            <div class="sc-question">?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deck -->
+            <div class="deck-zone">
+                <div class="deck-title">Deck</div>
+                <div class="deck-card-stack" id="deck-card-stack" onclick="handleDeckClick()" title="Cliquer pour tirer une carte">
+                    <div class="deck-card back-3"></div>
+                    <div class="deck-card back-2"></div>
+                    <div class="deck-card back-1"><div class="fortress-icon">🏰</div></div>
+                </div>
+                <div class="draw-indicator">
+                    <span class="draw-label">Tirage dans :</span>
+                    <span class="draw-count" id="draw-counter">2 tours</span>
+                </div>
+            </div>
+
+            <!-- Section Blanc (bas) -->
+            <div class="player-hand-section white-hand-section">
+                <div class="secret-slot">
+                    <div class="secret-label">Carte secrète Blanc</div>
+                    <div class="secret-card" id="secret-card-white" onclick="activateSecretCard('white')">
+                        <div class="sc-front" id="sc-front-white">
+                            <div class="sc-front-icon" id="sc-front-icon-white">⚔️</div>
+                            <div class="sc-front-name" id="sc-front-name-white">—</div>
+                            <div class="sc-front-type" id="sc-front-type-white">—</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hand-area" id="hand-white"></div>
+            </div>
+
+        </div><!-- fin right-panel -->
+    </div><!-- fin game-main -->
+
+    <!-- TIMERS EN MODE ZOOM -->
+    <div class="zoom-timers-bar" id="zoom-timers-bar">
+        <div class="ztb-timer">
+            <span class="ztb-name">Noir ♚</span>
+            <span class="ztb-time" id="ztb-timer-black">10:00</span>
+        </div>
+        <div class="ztb-timer">
+            <span class="ztb-name">Blanc ♚</span>
+            <span class="ztb-time" id="ztb-timer-white">10:00</span>
+        </div>
+    </div>
+
+    <!-- MODE ZOOM : bouton Voir Cartes + panneau coulissant -->
+    <button class="zoom-hand-btn" id="zoom-hand-btn" onclick="toggleZoomPanel()">
+        🃏 Voir Cartes
+    </button>
+    <div class="zoom-hand-panel" id="zoom-hand-panel">
+        <button class="zhp-close" onclick="closeZoomPanel()">← Fermer</button>
+        <div class="zhp-title">Votre main</div>
+        <div class="zhp-cards" id="zhp-cards"></div>
+        <div class="zhp-deck">
+            <span>🏰 Tirage dans : <strong id="zhp-draw-counter">—</strong></span>
+        </div>
+    </div>
+
+    <!-- OVERLAYS / PICKERS -->
+    <div id="card-action-overlay" style="display:none;">
+        <div class="cao-box"><div class="cao-message" id="cao-message"></div></div>
+    </div>
+
+    <div id="transform-picker" style="display:none;"></div>
+
+    <div id="expand-picker" style="display:none;">
+        <div class="ep-title">Agrandir le plateau</div>
+        <div class="ep-countdown" id="expand-countdown">10</div>
+        <div class="ep-options">
+            <button class="ep-btn" onclick="executeExpand('top')">↑ Haut</button>
+            <button class="ep-btn" onclick="executeExpand('bottom')">↓ Bas</button>
+            <button class="ep-btn" onclick="executeExpand('left')">← Gauche</button>
+            <button class="ep-btn" onclick="executeExpand('right')">→ Droite</button>
+        </div>
+    </div>
+
+    <div id="resurrection-overlay" style="display:none;">
+        <div class="res-content">
+            <div class="res-title" id="res-title">Choisissez une pièce à ressusciter</div>
+            <div class="res-pieces" id="res-pieces"></div>
+        </div>
+    </div>
+
+    <!-- Drawn card panel (cartes secrètes uniquement) -->
+    <div class="drawn-card-panel" id="drawn-card-panel" style="display:none; position:absolute; bottom:80px; right:24px; z-index:40;">
+        <div class="dcp-card"><div class="dcp-art" id="dcp-art"></div><div class="dcp-divider"></div><div class="dcp-name" id="dcp-name"></div><div class="dcp-desc" id="dcp-desc"></div></div>
+        <div class="dcp-timer"><div class="dcp-timer-bar" id="dcp-timer-bar"></div></div>
+        <div class="dcp-instructions" id="dcp-instructions"></div>
+    </div>
+
+    <!-- Vue plateau final (overlay léger) -->
+    <div id="view-board-overlay" class="view-board-overlay" style="display:none;">
+        <div class="vbo-bar">
+            <span class="vbo-label">Plateau final — Lecture seule</span>
+            <button class="menu-btn vbo-btn" onclick="backToMenu()">← Menu</button>
+        </div>
+    </div>
+
+</div><!-- fin game-screen -->
+
+<!-- ==================== ANIMATION TIRAGE DE CARTE (C9) ==================== -->
+<div id="card-draw-overlay" class="card-draw-overlay" style="display:none;">
+    <div class="cdo-content">
+        <div class="cdo-player" id="cdo-player">Joueur Blanc tire une carte !</div>
+        <div class="cdo-card">
+            <div class="cdo-icon" id="cdo-icon">🃏</div>
+            <div class="cdo-name" id="cdo-name">Carte</div>
+            <div class="cdo-desc" id="cdo-desc"></div>
+        </div>
+        <div class="cdo-hint">→ Ajoutée à votre main</div>
+    </div>
+</div>
+
+<!-- ==================== GALERIE DE CARTES ==================== -->
+<div id="card-gallery-modal" class="modal-overlay" style="display:none;" onclick="closeCardGallery()">
+    <div class="gallery-content" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeCardGallery()">✕</button>
+        <h2 class="gallery-title">Cartes du Deck</h2>
+        <div class="gallery-section">
+            <h3 class="gallery-section-title">🃏 Cartes Normales <span class="gallery-hint">(tirées en jeu, vont en main)</span></h3>
+            <div class="gallery-grid" id="gallery-normal"></div>
+        </div>
+        <div class="gallery-section">
+            <h3 class="gallery-section-title">🏰 Cartes Secrètes <span class="gallery-hint">(choisies au début, usage unique)</span></h3>
+            <div class="gallery-grid" id="gallery-secret"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODAL ABANDON ==================== -->
+<div id="forfeit-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content gameover-content">
+        <h2 style="color:var(--accent)">Abandonner ?</h2>
+        <p id="forfeit-message">Êtes-vous sûr ?</p>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
+            <button class="menu-btn" onclick="confirmForfeit()"><span class="btn-text">Oui, abandonner</span></button>
+            <button class="menu-btn" onclick="cancelForfeit()" style="border-color:var(--text-dim)"><span class="btn-text">Annuler</span></button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODAL CARTE SECRÈTE ==================== -->
+<div id="secret-card-modal" class="modal-overlay" style="display:none;" onclick="closeSecretCardModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeSecretCardModal()">✕</button>
+        <div class="modal-card">
+            <div class="modal-card-art" id="modal-card-art">🏰</div>
+            <h2 class="modal-card-name" id="modal-card-name"></h2>
+            <p class="modal-card-desc" id="modal-card-desc"></p>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODAL FIN DE PARTIE (C8) ==================== -->
+<div id="gameover-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content gameover-big">
+        <h2 id="gameover-title">Fin de partie !</h2>
+        <p id="gameover-reason" class="gameover-reason"></p>
+
+        <!-- Boutons au-dessus du tableau -->
+        <div class="gameover-buttons">
+            <button class="menu-btn" onclick="backToMenu()"><span class="btn-text">Menu</span></button>
+            <button class="menu-btn menu-btn-secondary" onclick="viewFinalBoard()"><span class="btn-text">Voir plateau</span></button>
+        </div>
+
+        <!-- Tableau de stats -->
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>♚ Blanc</th>
+                    <th>♚ Noir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pièces capturées</td>
+                    <td id="go-white-captured">0</td>
+                    <td id="go-black-captured">0</td>
+                </tr>
+                <tr>
+                    <td>Coups joués</td>
+                    <td id="go-white-moves">0</td>
+                    <td id="go-black-moves">0</td>
+                </tr>
+                <tr>
+                    <td>Temps restant</td>
+                    <td id="go-white-time">0:00</td>
+                    <td id="go-black-time">0:00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

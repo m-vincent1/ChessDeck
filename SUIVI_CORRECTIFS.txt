@@ -1,0 +1,35 @@
+SUIVI DES CORRECTIFS — ÉchecDeck
+==================================
+
+[C4+C5+C7] Effets suivent la pièce (bouclier, brouillard, transformation) — game.js : les effets ancrés sur une case se déplacent avec la pièce lors de makeMove.
+[C6] Résurrection améliorée — game.js + style.css : toutes les pièces du cimetière disponibles (pas que les pions), pas de condition, placement sur 2 lignes alliées, zones rouge/noir affichées.
+[C2] Plateau sans dézoom — game.js + style.css : la taille des cases reste fixe (72px) lors de l'agrandissement ; le conteneur devient scrollable si besoin.
+[C9] Drapeau d'abandon — index.html + game.js + style.css : bouton 🏳️ à côté de chaque timer, modal de confirmation, seul le joueur dont c'est le tour peut abandonner.
+[C8] Galerie de cartes dans le menu — index.html + game.js + style.css : bouton "Voir les cartes", modal avec toutes les cartes normales et secrètes cliquables.
+--- CHANGEMENTS_2.TXT ---
+[C2-1] Cartes toujours visibles — les cartes en main restent face visible même pendant le tour adverse.
+[C2-2] Pas de doublons — si une carte tirée est déjà en main elle est ignorée (mais affichée en animation).
+[C2-3] Agrandissement joué directement — ne va pas en main, countdown numérique de 10s sur la fenêtre, direction aléatoire si timeout.
+[C2-4] Ajout de pions : surlignage rouge/noir identique à la résurrection pendant le placement.
+[C2-5] Fond flouté pendant la sélection de carte secrète — game-screen visible en arrière-plan, backdrop-filter blur.
+[C2-6] Cartes secrètes et main agrandies — sc-back/sc-front 96×138px, hand-card 66×92px.
+[C2-7] Mode zoom plateau — bouton ⛶ sur le coin du plateau, cache tout sauf le plateau, bouton maintien pour voir la main et le deck.
+[C2-8] Fin de partie redessinée — tableau de stats (pièces capturées, coups joués, temps restant), boutons Menu et Voir plateau.
+[C2-9] Animation de tirage — carte affichée en grand plein écran avant d'aller en main.
+[C2-10] Menu redessiné — bouton Jouer (→ choix 5/10 min) + Voir les cartes, en colonne.
+[C1+C3] Cartes à droite + Système de main — index.html + game.js + style.css : refonte complète du panneau droit (cartes secrètes + main intégrées), les cartes tirées vont en main (pas de timer de 10s), face de dos (🏰) pour l'adversaire, jouable en début de tour avant de déplacer une pièce.
+--- CHANGEMENTS_3.TXT ---
+[C3-1] Pions proportionnels — style.css : font-size des cases = calc(var(--cell-size)*0.69), taille constante quel que soit l'agrandissement.
+[C3-2] Zoom plateau amélioré — game.js + index.html + style.css : taille réduite à 90px, barre de scroll cachée, bouton "Voir Cartes" onclick ouvre panneau coulissant depuis la droite avec bouton ← Fermer.
+[C3-3] Drapeau d'abandon plus visible — style.css : opacity .72 par défaut, fond sombre, hover rouge.
+[C3-4] Échange suit les effets — game.js : handleExchangeTarget échange aussi les positions dans G.activeEffects.
+[C3-5] Résurrection sans Reine — game.js : la Dame (q/Q) est filtrée hors des choix du cimetière.
+[C3-6] Voir plateau sans flou — style.css : suppression de backdrop-filter et background-color sur view-board-overlay.
+--- CHANGEMENTS_4.TXT ---
+[C4-1] Hover bouton zoom sans scrollbar — style.css : suppression du transform:scale sur .board-zoom-btn:hover.
+[C4-2] Panneau zoom interactif — game.js + style.css : cartes en main jouables (onclick), carte secrète en rouge cliquable, décompte adverse en dos de cartes.
+[C4-3] Timers en mode zoom — index.html + game.js + style.css : barre .zoom-timers-bar centrée en haut du plateau, synchronisée avec updateTimerDisplay().
+[C4-4] Fond sombre en mode zoom — style.css : background rgba(10,10,20,.92) sur #game-screen.board-zoom-active.
+--- CHANGEMENTS_5.TXT ---
+[C5-1] Sélection de pièce effacée au jeu d'une carte — game.js : playCardFromHand vide G.selectedCell et G.validMoves avant beginCardTargeting, évitant que la pièce d'arrivée hérite des déplacements de la pièce d'origine.
+[C5-2] Main sans limite de stockage — game.js : suppression du filtre doublons dans drawCard ; toutes les cartes tirées vont en main même si un exemplaire identique y est déjà.

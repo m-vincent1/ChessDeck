@@ -1,0 +1,11 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Stockfish binaries
+stockfish/*.exe
+stockfish/*.dll
+stockfish/src/
+stockfish/scripts/
+stockfish/wiki/
